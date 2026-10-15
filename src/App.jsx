@@ -7,7 +7,7 @@ import DishDetail from './DishDetail';
 import Cart from './Cart';
 import Checkout from './Checkout';
 import NotFound from './NotFound';
-import RequireAuth from './auth/RequireAuth';
+import RequireAuth from './auth/requireAuth';
 import { CartProvider } from './cart/CartProvider';
 
 export default function App() {

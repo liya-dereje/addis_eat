@@ -1,4 +1,5 @@
-import React from 'react';
+import React,{lazy,Suspense} from 'react';
+import errorBoundary from './errorBoundary';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './Layout';
 import Home from './Home';
@@ -10,25 +11,28 @@ import NotFound from './NotFound';
 import requireAuth from './auth/requireAuth';
 import { cartProvider } from './cart/cartProvider';
 
+const checkout =lazy(()=>import('./checkout/checkout'));
+const recipt =lazy(()=>import('./orders/receipt'))
+
 export default function App() {
   return (
-    <CartProvider>
+    <cartProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="menu" element={<Menu />} />
-            <Route path="menu/:id" element={<DishDetail />} />
-            <Route path="cart" element={<Cart />} />
+            <Route path="menu" element={<menu />} />
+            <Route path="menu/:id" element={<dishDetail />} />
+            <Route path="cart" element={<cart />} />
             <Route path="checkout" element={
-              <RequireAuth>
-                <Checkout />
-              </RequireAuth>
+              <requireAuth>
+                <checkout />
+              </requireAuth>
             } />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>
-    </CartProvider>
+    </cartProvider>
   );
 }

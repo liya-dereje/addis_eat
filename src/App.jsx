@@ -2,13 +2,13 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './Layout';
 import Home from './Home';
-import Menu from './Menu';
-import DishDetail from './DishDetail';
-import Cart from './Cart';
-import Checkout from './checkout/checkout';
+import menu from './menu';
+import dishDetail from './dishDetail';
+import cart from './cart';
+import checkout from './checkout/checkout';
 import NotFound from './NotFound';
-import RequireAuth from './auth/requireAuth';
-import { CartProvider } from './cart/CartProvider';
+import requireAuth from './auth/requireAuth';
+import { cartProvider } from './cart/cartProvider';
 
 export default function App() {
   return (

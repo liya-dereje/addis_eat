@@ -1,4 +1,3 @@
-// src/Card.jsx
 import PropTypes from "prop-types";
 
 function Card({ children }) {

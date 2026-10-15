@@ -1,27 +1,26 @@
 import React, { useState } from 'react';
 
 export default function OrderForm() {
-  // Single object state tracking form fields
   const [form, setForm] = useState({
     name: "",
     phone: "",
     area: "Bole"
   });
 
-  // Handle live inputs cleanly using computed property names
+  
   function handleChange(e) {
     const { name, value } = e.target;
     setForm({
-      ...form,       // Copy existing object properties safely
-      [name]: value  // Override current changing field
+      ...form,   
+      [name]: value  
     });
   }
 
-  // Derive validity on every render loop (Live TeleBirr matching pattern)
+
   const isValid = /^(?:\+251|0)9\d{8}\$/.test(form.phone);
 
   function handleSubmit(e) {
-    e.preventDefault(); // Stop native browser tab reload
+    e.preventDefault(); 
     alert(`Order placed successfully for ${form.name}!`);
   }
 

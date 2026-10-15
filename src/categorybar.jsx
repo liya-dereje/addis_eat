@@ -8,7 +8,7 @@ export default function CategoryBar({ selected, onSelect }) {
       {categories.map((cat) => (
         <button
           key={cat}
-          className={cat === selected ? "chip on" : "chip"} // Highlights matching category
+          className={cat === selected ? "chip on" : "chip"} 
           onClick={() => onSelect(cat)}
         >
           {cat}

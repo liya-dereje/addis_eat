@@ -1,52 +1,74 @@
-import React, { useState } from 'react';
-import { dishesData } from './data'; // Assumes item configurations exist here
+import React, { useState, useEffect, useRef } from 'react';
+import { loadDishes } from './api';
 import CategoryBar from './CategoryBar';
-import OrderForm from './OrderForm';
+import DishList from './DishList';
 
 export default function Menu() {
-  // Lifted States
   const [category, setCategory] = useState("All");
-  const [orderTotal, setOrderTotal] = useState(0);
+  const [dishes, setDishes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Derive the active list from category state dynamically (No separate state variable needed!)
-  const shownDishes = category === "All"
-    ? dishesData
-    : dishesData.filter(d => d.category === category);
+  const searchInputRef = useRef(null);
 
-  // Callback helper fired from individual nested dishes
-  function handleAddToOrder(price) {
-    setOrderTotal(prevTotal => prevTotal + price);
-  }
+  useEffect(() => {
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    
+    async function fetchMenuData() {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const data = await loadDishes(category, controller.signal);
+        setDishes(data);
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          setError(err.message || "An unexpected error occurred.");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    fetchMenuData();
+
+    return () => {
+      controller.abort();
+    };
+  }, [category]);
 
   return (
-    <div className="menu-container">
-      <h1>Addis Eats Menu</h1>
-      
-      {/* Category selection */}
+    <div className="menu-wrapper">
+      <h2>Addis Eats Menu Hub</h2>
+
+      <div className="search-section">
+        <input
+          ref={searchInputRef}
+          type="text"
+          placeholder="Search menu items..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="search-input"
+        />
+      </div>
+
       <CategoryBar selected={category} onSelect={setCategory} />
 
-      {/* Running Subtotal Header */}
-      <div className="total-banner">
-        <h3>Running Total: {orderTotal} ETB</h3>
-      </div>
-
-      {/* Dishes Render Grid */}
-      <div className="dish-list">
-        {shownDishes.map((dish) => (
-          <div key={dish.id} className="dish-card">
-            <h4>{dish.name} {dish.spicy ? '🔥' : ''}</h4>
-            <p>{dish.price} ETB</p>
-            <button onClick={() => handleAddToOrder(dish.price)}>
-              Add to Order
-            </button>
-          </div>
-        ))}
-      </div>
-
-      {/* Delivery Check-out section */}
-      <hr />
-      <h3>Delivery Details</h3>
-      <OrderForm />
+      {loading && <p className="loading-spinner">Loading Addis Eats menu details...</p>}
+      {error && <p className="error-message"> Error: {error}</p>}
+      
+      {!loading && !error && (
+        <DishList dishes={dishes} filterText={searchQuery} />
+      )}
     </div>
   );
 }

@@ -1,14 +1,21 @@
-import React from 'react';
+\import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import CategoryBar from './categorybar';
 
 export const revalidate = 3600;
 
+export const metadata = {
+  title: "Traditional Menu",
+  description: "Explore authentic Ethiopian dishes ready for delivery across Addis Ababa.",
+  alternates: {
+    canonical: "/menu",
+  },
+};
+
 export default function MenuPage() {
   const sampleDishes = [
-    { id: 'kitfo', name: 'Traditional Kitfo', img: '/dishes/kitfo.jpg', price: 450 },
-    { id: 'shiro', name: 'Special Shiro', img: '/dishes/shiro.jpg', price: 220 }
+    { id: 'kitfo', name: 'Traditional Kitfo' },
+    { id: 'shiro', name: 'Special Shiro' }
   ];
 
   return (
@@ -17,24 +24,11 @@ export default function MenuPage() {
       
       <CategoryBar />
 
-      <ul className="space-y-4 mt-4">
+      <ul className="space-y-2 mt-4">
         {sampleDishes.map((dish) => (
-          <li key={dish.id} className="border p-4 rounded-xl shadow-sm flex gap-4 items-center bg-white">
-            <div className="relative w-24 h-24 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
-              <Image 
-                src={dish.img} 
-                alt={`Fresh plate of ${dish.name}`}
-                width={96}
-                height={94}
-                sizes="96px"
-                className="object-cover"
-              />
-            </div>
-            <div className="flex-grow">
-              <span className="font-semibold block text-lg text-gray-900">{dish.name}</span>
-              <span className="text-sm text-gray-500 block">{dish.price} ETB</span>
-            </div>
-            <Link href={`/menu/${dish.id}`} className="text-blue-500 hover:text-blue-600 font-medium text-sm underline">
+          <li key={dish.id} className="border p-4 rounded shadow-sm flex justify-between items-center bg-white">
+            <span className="font-medium text-gray-900">{dish.name}</span>
+            <Link href={`/menu/${dish.id}`} className="text-blue-500 underline text-sm hover:text-blue-600">
               View Profile
             </Link>
           </li>

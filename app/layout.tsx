@@ -17,8 +17,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Addis Eats",
-  description: "Delicious traditional food ordering platform",
+  metadataBase: new URL("https://addiseats.et"),
+  title: {
+    template: "%s · Addis Eats",
+    default: "Addis Eats · Food Delivery in Addis Ababa",
+  },
+  description: "Order fresh traditional Doro Wat, Shiro, and Kitfo from kitchens in Bole and Kazanchis.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

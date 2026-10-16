@@ -1,4 +1,10 @@
 import Link from 'next/link';
+export async function generateStaticParams() {
+  return[
+    { id: 'kitfo' },
+    { id: 'shiro' }
+  ];
+}
 
 export default function DishDetailPage({ params }) {
   const { id } = params;

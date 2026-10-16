@@ -1,5 +1,5 @@
 import Link from 'next/link';
-
+export const revalidate=3600;
 export default function MenuPage() {
   const sampleDishes = [
     { id: 'kitfo', name: 'Traditional Kitfo' },
